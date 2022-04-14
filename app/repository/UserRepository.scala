@@ -14,11 +14,19 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   val users = TableQuery[UserTable]
 
   def add(user: User): Future[String] = {
-    db.run(users += user).map(res => "User successfully added").recover {
+    db.run(users += user)
+      .map(res => "User successfully added").recover {
       case ex: Exception =>
         ex.getCause.getMessage
     }
   }
+
+//  def add(user: User) = {
+//    db.run(users returning users.map(_.id) += user)
+//      .map(id => user.copy(id = Some(id)))
+//  }
+
+//  val forInsert = users returning users.map(_.id) into ((user, id) => user.copy(id = Some(id)))
 
   def delete(id: Int): Future[Int] = {
     db.run(users.filter(_.id === id).delete)
@@ -42,7 +50,7 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   }
 
   class UserTable(tag: Tag) extends Table[User](tag, "user") {
-    def id = column[Int]("id", O.PrimaryKey)
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def password = column[String]("password")
 

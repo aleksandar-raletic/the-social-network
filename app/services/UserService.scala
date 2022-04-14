@@ -1,13 +1,24 @@
 package services
-import com.google.inject.Inject
-import models.User
-import repository.UserRepository
 
+import models.{User, CreateUser}
+import repository.UserRepository
+import javax.inject.Inject
 import scala.concurrent.Future
 
 class UserService @Inject()(userRepository: UserRepository) {
 
-  def addUser(user: User): Future[String] = {
+//  def addUser(user: User): Future[User] = {
+//    userRepository.add(user)
+//  }
+
+  def addUser(createUser: CreateUser): Future[String] = {
+    val user = User(
+      id = 0,
+      password = createUser.password,
+      firstName = createUser.firstName,
+      lastName = createUser.lastName,
+      email = createUser.email
+    )
     userRepository.add(user)
   }
 
