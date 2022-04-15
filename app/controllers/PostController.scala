@@ -1,12 +1,11 @@
 package controllers
+
 import models.Formats.{createPostFormat, postFormat, updatePostFormat}
 import models.{CreatePost, Post, UpdatePost}
 import play.api.Logging
-
 import play.api.libs.json.Json
 import play.api.mvc._
 import services.PostService
-
 import javax.inject._
 import scala.concurrent.ExecutionContext
 
@@ -15,35 +14,36 @@ class PostController @Inject()(cc: ControllerComponents, postService: PostServic
     extends AbstractController(cc)
     with Logging {
 
-//  def addPost() = Action.async(parse.json[CreatePost]) { request =>
-//    val createPost: CreatePost = request.body
-//    postService.addPost(createPost).map(createdPost => Ok(Json.toJson(createdPost)))
-//  }
-
-    def addPost() = Action.async(parse.json[CreatePost]) { request =>
-      val createPost: CreatePost = request.body
-      postService.addPost(createPost).map(createdPost => Ok(Json.toJson(createdPost)))
-    }
+  def addPost() = Action.async(parse.json[CreatePost]) { request =>
+    val createPost: CreatePost = request.body
+    postService
+      .addPost(createPost)
+      .map(addedPost => Ok(Json.toJson(addedPost)))
+      .recover(exception => BadRequest(exception.getMessage))
+  }
 
   def getPost(id: Int) = Action.async {
     postService
       .getPost(id)
-      .map((maybePost: Option[Post]) => {
-        if (maybePost.isDefined) {
-          Ok(Json.toJson(maybePost.get))
-        } else {
-          NotFound
-        }
+      .map((retrievedPost: Option[Post]) => {
+        Ok(Json.toJson(retrievedPost))
       })
-  }
-
-  def deletePost(id: Int) = Action.async {
-    postService.deletePost(id).map(message => Ok("Post deleted"))
+      .recover(exception => BadRequest(exception.getMessage))
   }
 
   def updatePost() = Action.async(parse.json[UpdatePost]) { request =>
     val updatePost: UpdatePost = request.body
-    postService.updatePost(updatePost).map(updatedPost => Ok(Json.toJson(updatedPost)))
+    postService
+      .updatePost(updatePost)
+      .map(updatedPost => Ok(Json.toJson(updatedPost)))
+      .recover(exception => BadRequest(exception.getMessage))
+  }
+
+  def deletePost(id: Int) = Action.async {
+    postService
+      .deletePost(id)
+      .map(deletedPost => Ok("Post deleted"))
+      .recover(exception => BadRequest(exception.getMessage))
   }
 
 }

@@ -1,6 +1,7 @@
 package controllers
-import models.Formats.{friendRequestFormat, createFriendRequestFormat, acceptDeclineFriendRequestFormat}
-import models.{FriendRequest, CreateFriendRequest, AcceptDeclineFriendRequest}
+
+import models.Formats.{createFriendRequestFormat, acceptDeclineFriendRequestFormat}
+import models.{CreateFriendRequest, AcceptDeclineFriendRequest}
 import play.api.libs.json.Json
 import play.api.Logging
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -18,16 +19,15 @@ class FriendRequestController @Inject()(cc: ControllerComponents, friendRequestS
     val createFriendRequest: CreateFriendRequest = request.body
     friendRequestService
       .sendFriendRequest(createFriendRequest)
-      .map(createdFriendRequest => Ok(Json.toJson(createdFriendRequest)))
+      .map(createdFriendRequest => Ok(Json.toJson("Friend request sent")))
       .recover(exception => BadRequest(exception.getMessage))
-
   }
 
   def acceptFriendRequest() = Action.async(parse.json[AcceptDeclineFriendRequest]) { request =>
     val acceptFriendRequest: AcceptDeclineFriendRequest = request.body
     friendRequestService
       .acceptFriendRequest(acceptFriendRequest)
-      .map(acceptedFriendRequest => Ok(Json.toJson(acceptedFriendRequest)))
+      .map(acceptedFriendRequest => Ok(Json.toJson("Friend request accepted")))
       .recover(exception => BadRequest(exception.getMessage))
   }
 
@@ -35,7 +35,7 @@ class FriendRequestController @Inject()(cc: ControllerComponents, friendRequestS
     val declineFriendRequest: AcceptDeclineFriendRequest = request.body
     friendRequestService
       .declineFriendRequest(declineFriendRequest)
-      .map(declinedFriendRequest => Ok(Json.toJson(declinedFriendRequest)))
+      .map(declinedFriendRequest => Ok(Json.toJson("Friend request declined")))
       .recover(exception => BadRequest(exception.getMessage))
   }
 

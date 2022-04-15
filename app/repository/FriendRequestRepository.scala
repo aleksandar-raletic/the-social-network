@@ -4,43 +4,17 @@ import com.google.inject.Inject
 import models.FriendRequest
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
-
 import scala.concurrent.{ExecutionContext, Future}
 
 class FriendRequestRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
     extends HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
-
   val friendRequests = TableQuery[FriendRequestTable]
 
   def sendFriendRequest(friendRequest: FriendRequest) = {
-    db.run(friendRequests += friendRequest).map(res => "Friend request sent").recover {
-      case ex: Exception => ex.getMessage
-    }
+    db.run(friendRequests += friendRequest)
   }
-
-  //radi
-//  def getFriendRequest(requestFrom: Int, requestTo: Int) = {
-//    db.run(
-//      friendRequests
-//        .filter(friendRequest => friendRequest.requestFrom === requestFrom && friendRequest.requestTo === requestTo)
-//        .result
-//        .headOption
-//    )
-//  }
-
-//  def getFriendRequest(requestFrom: Int, requestTo: Int) = {
-//    db.run(
-//      friendRequests
-//        .filter(
-//          friendRequest =>
-//            (friendRequest.requestFrom === requestFrom && friendRequest.requestTo === requestTo) || (friendRequest.requestFrom === requestTo && friendRequest.requestTo === requestFrom)
-//        )
-//        .result
-//        .headOption
-//    )
-//  }
 
   def getFriendRequest(requestFrom: Int, requestTo: Int) = {
     db.run(
@@ -61,17 +35,13 @@ class FriendRequestRepository @Inject()(protected val dbConfigProvider: Database
   def acceptFriendRequest(friendRequest: FriendRequest) = {
     db.run(
       friendRequests
-      //.filter(_.friendRequestId === friendRequest.friendRequestId)
         .filter(_.friendRequestId === friendRequest.friendRequestId)
         .update(friendRequest)
-        .map(res => "Friend request accepted")
     )
   }
 
   def declineFriendRequest(friendRequestId: Int) = {
-    db.run(friendRequests.filter(_.friendRequestId === friendRequestId).delete).map(res => "Friend request declined").recover {
-      case ex: Exception => ex.getMessage
-    }
+    db.run(friendRequests.filter(_.friendRequestId === friendRequestId).delete)
   }
 
   class FriendRequestTable(tag: Tag) extends Table[FriendRequest](tag, "friend_request") {
@@ -84,4 +54,5 @@ class FriendRequestRepository @Inject()(protected val dbConfigProvider: Database
     def * = (friendRequestId, requestFrom, requestTo, status) <> (FriendRequest.tupled, FriendRequest.unapply)
 
   }
+
 }

@@ -1,7 +1,6 @@
 package models
 
 import play.api.libs.json.Json
-
 import play.api.libs.json.JodaReads._
 import play.api.libs.json.JodaWrites._
 
@@ -18,4 +17,5 @@ object Formats {
   implicit val friendRequestFormat = Json.format[FriendRequest]
   implicit val createFriendRequestFormat = Json.format[CreateFriendRequest]
   implicit val acceptDeclineFriendRequestFormat = Json.format[AcceptDeclineFriendRequest]
+
 }

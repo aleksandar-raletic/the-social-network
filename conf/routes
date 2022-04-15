@@ -1,32 +1,23 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# https://www.playframework.com/documentation/latest/ScalaRouting
-# ~~~~
-
-# An example controller showing a sample home page
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
 
 #UserController
-POST    /addUser                    controllers.UserController.addUser
-GET     /getUser/:id                controllers.UserController.getUser(id: Int)
-GET     /listAllUsers               controllers.UserController.listAllUsers
-PUT     /updateUser                 controllers.UserController.updateUser
-DELETE  /deleteUser/:id             controllers.UserController.deleteUser(id: Int)
+POST    /users                    controllers.UserController.addUser
+GET     /users                    controllers.UserController.listAllUsers
+GET     /users/:id                controllers.UserController.getUser(id: Int)
+PUT     /users                    controllers.UserController.updateUser
+DELETE  /users/:id                controllers.UserController.deleteUser(id: Int)
 
 #PostController
-POST    /addPost                    controllers.PostController.addPost
-GET     /getPost/:id                controllers.PostController.getPost(id: Int)
-PUT     /updatePost                 controllers.PostController.updatePost
-DELETE  /deletePost/:id             controllers.PostController.deletePost(id: Int)
+POST    /posts                    controllers.PostController.addPost
+GET     /posts/:id                controllers.PostController.getPost(id: Int)
+PUT     /posts                    controllers.PostController.updatePost
+DELETE  /posts/:id                controllers.PostController.deletePost(id: Int)
 
 #LikeController
-POST    /addLike                    controllers.LikeController.addLike
-#GET    /getLike/:id                controllers.LikeController.getLikeController(id: Int)
-DELETE  /removeLike                 controllers.LikeController.removeLike
+POST    /likes                    controllers.LikeController.addLike
+DELETE  /likes                    controllers.LikeController.removeLike
 
 #FriendRequestController
-POST    /sendFriendRequest          controllers.FriendRequestController.sendFriendRequest
-PUT     /acceptFriendRequest        controllers.FriendRequestController.acceptFriendRequest
-DELETE  /declineFriendRequest       controllers.FriendRequestController.declineFriendRequest
+POST    /friend-request           controllers.FriendRequestController.sendFriendRequest
+PUT     /friend-request           controllers.FriendRequestController.acceptFriendRequest
+DELETE  /friend-request           controllers.FriendRequestController.declineFriendRequest
