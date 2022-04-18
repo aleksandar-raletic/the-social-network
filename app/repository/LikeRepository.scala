@@ -31,4 +31,16 @@ class LikeRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
     def * = (userId, postId) <> (Like.tupled, Like.unapply)
   }
 
+  //val q1 = likes.length
+
+//  def countRow: DBIO[Int] =
+//    sqlu"""SELECT COUNT(post_id) FROM likes WHERE post_id = 4"""
+
+//  def randomMethod(postId: Int): Future[Seq[Int]] = {
+//    db.run(sql"""SELECT COUNT(post_id) FROM likes WHERE post_id = postId""".as(Int))
+//  }
+
+  def countLikesForPost(postId: Int): Future[Option[Int]] = {
+    db.run(sql"""SELECT COUNT(post_id) FROM likes WHERE post_id = $postId""".as[Int]).map(counts => counts.headOption)
+  }
 }

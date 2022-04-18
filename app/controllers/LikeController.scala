@@ -1,7 +1,7 @@
 package controllers
 
-import models.Formats.likeFormat
-import models.Like
+import models.Formats.{likeFormat, countLikeFormat}
+import models.{Like, CountLike}
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -27,6 +27,16 @@ class LikeController @Inject()(cc: ControllerComponents, likeService: LikeServic
     likeService
       .dislike(like)
       .map(removedLike => Ok(Json.toJson("Disliked post")))
+      .recover(exception => BadRequest(exception.getMessage))
+  }
+
+  def countLikesForPost() = Action.async(parse.json[CountLike]) { request =>
+    val countLike: CountLike = request.body
+    likeService
+      .countLikesForPost(countLike.postId)
+      .map(
+        (countedLikes: Option[Int]) => Ok(Json.toJson(s"Post with id: ${countLike.postId} has " + countedLikes.get + " number of likes"))
+      )
       .recover(exception => BadRequest(exception.getMessage))
   }
 

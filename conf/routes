@@ -16,6 +16,7 @@ DELETE  /posts/:id                controllers.PostController.deletePost(id: Int)
 #LikeController
 POST    /likes                    controllers.LikeController.addLike
 DELETE  /likes                    controllers.LikeController.removeLike
+GET     /likes-count              controllers.LikeController.countLikesForPost
 
 #FriendRequestController
 POST    /friend-request           controllers.FriendRequestController.sendFriendRequest

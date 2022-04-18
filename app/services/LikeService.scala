@@ -26,4 +26,12 @@ class LikeService @Inject()(likesRepository: LikeRepository)(implicit executionC
     }
   }
 
+//  def countLikesForPost(postId: Int) = {
+//    likesRepository.countLikesForPost(postId)
+//  }
+
+  def countLikesForPost(postId: Int) = {
+    likesRepository.countLikesForPost(postId)
+  }
+
 }

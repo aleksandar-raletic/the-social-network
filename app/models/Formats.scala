@@ -13,6 +13,7 @@ object Formats {
   implicit val updatePostFormat = Json.format[UpdatePost]
 
   implicit val likeFormat = Json.format[Like]
+  implicit val countLikeFormat = Json.format[CountLike]
 
   implicit val friendRequestFormat = Json.format[FriendRequest]
   implicit val createFriendRequestFormat = Json.format[CreateFriendRequest]
