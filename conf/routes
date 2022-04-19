@@ -12,6 +12,7 @@ POST    /posts                    controllers.PostController.addPost
 GET     /posts/:id                controllers.PostController.getPost(id: Int)
 PUT     /posts                    controllers.PostController.updatePost
 DELETE  /posts/:id                controllers.PostController.deletePost(id: Int)
+GET     /post-likes/:id          controllers.PostController.getPostAndCountLikes(id: Int)
 
 #LikeController
 POST    /likes                    controllers.LikeController.addLike
@@ -22,3 +23,4 @@ GET     /likes-count              controllers.LikeController.countLikesForPost
 POST    /friend-request           controllers.FriendRequestController.sendFriendRequest
 PUT     /friend-request           controllers.FriendRequestController.acceptFriendRequest
 DELETE  /friend-request           controllers.FriendRequestController.declineFriendRequest
+#GET     /friend-request/:id       controllers.FriendRequestController.sumNumberOfFriends(id: Int)

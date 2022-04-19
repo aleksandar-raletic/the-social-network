@@ -36,6 +36,11 @@ class PostRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
     db.run(posts.filter(_.id === id).delete)
   }
 
+  def countLikesForPost(id: Int): Future[Option[Int]] = {
+    db.run(sql"""SELECT COUNT(id) FROM post JOIN likes ON post.id=likes.post_id WHERE post_id = $id""".as[Int])
+      .map(counts => counts.headOption)
+  }
+
   class PostTable(tag: Tag) extends Table[Post](tag, "post") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def userId = column[Int]("user_id")

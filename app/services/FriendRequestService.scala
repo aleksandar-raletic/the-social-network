@@ -65,4 +65,17 @@ class FriendRequestService @Inject()(protected val friendRequestRepository: Frie
     friendRequestRepository.getId(friendRequestId)
   }
 
+//  def sumNumberOfFriends(userId: Int) = {
+//    friendRequestRepository.sumNumberOfFriends(userId)
+//  }
+//
+//  def numberOfFriends(userId: Int) = {
+//    friendRequestRepository.getId(userId).flatMap {
+//      case Some(friendrequest) =>
+//        if (friendrequest.requestFrom == userId) {
+//          //
+//        }
+//    }
+//  }
+
 }

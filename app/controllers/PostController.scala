@@ -1,6 +1,6 @@
 package controllers
 
-import models.Formats.{createPostFormat, postFormat, updatePostFormat}
+import models.Formats.{createPostFormat, postFormat, updatePostFormat, postsAndLikesFormat}
 import models.{CreatePost, Post, UpdatePost}
 import play.api.Logging
 import play.api.libs.json.Json
@@ -44,6 +44,17 @@ class PostController @Inject()(cc: ControllerComponents, postService: PostServic
       .deletePost(id)
       .map(deletedPost => Ok("Post deleted"))
       .recover(exception => BadRequest(exception.getMessage))
+  }
+
+  def getPostAndCountLikes(id: Int) = Action.async {
+    postService.getPost(id).flatMap {
+      case Some(post) =>
+        postService
+          .countLikesForPost(id)
+          .map(
+            postWithLikes => Ok(Json.toJson(postWithLikes))
+          )
+    }
   }
 
 }

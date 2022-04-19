@@ -1,5 +1,6 @@
 package services
 
+import dto.PostsAndLikesDto
 import models.{CreatePost, Post, UpdatePost}
 import org.joda.time.DateTime
 import repository.PostRepository
@@ -34,6 +35,26 @@ class PostService @Inject()(postRepository: PostRepository)(implicit executionCo
     postRepository.getPost(id).flatMap {
       case Some(_) => postRepository.deletePost(id)
       case None    => throw new Exception("Post with specified id doesn't exist")
+    }
+  }
+
+  def countLikesForPost(id: Int) = {
+    postRepository.getPost(id).flatMap {
+      case Some(post) =>
+        postRepository
+          .countLikesForPost(id)
+          .map(
+            likesCount =>
+              PostsAndLikesDto(
+                id = post.id,
+                userId = post.userId,
+                dateTime = post.dateTime,
+                title = post.title,
+                text = post.text,
+                likeCount = likesCount.getOrElse(-1)
+              )
+          )
+      case None => throw new Exception("Error")
     }
   }
 

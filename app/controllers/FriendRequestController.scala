@@ -39,4 +39,11 @@ class FriendRequestController @Inject()(cc: ControllerComponents, friendRequestS
       .recover(exception => BadRequest(exception.getMessage))
   }
 
+//  def sumNumberOfFriends(userId: Int) = Action.async {
+//    friendRequestService
+//      .sumNumberOfFriends(userId)
+//      .map(summedFriends => Ok(Json.toJson("User with id: " + userId + " has " + summedFriends.get + " friends")))
+//      .recover(exception => BadRequest(exception.getMessage))
+//  }
+
 }
