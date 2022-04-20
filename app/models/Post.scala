@@ -7,3 +7,5 @@ case class Post(id: Int, userId: Int, dateTime: DateTime, title: String, text: S
 case class CreatePost(userId: Int, title: String, text: String)
 
 case class UpdatePost(id: Int, title: String, text: String)
+
+case class ShowPost(id: Int, dateTime: DateTime, title: String, text: String)

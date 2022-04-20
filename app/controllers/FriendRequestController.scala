@@ -1,7 +1,8 @@
 package controllers
 
-import models.Formats.{createFriendRequestFormat, acceptDeclineFriendRequestFormat}
-import models.{CreateFriendRequest, AcceptDeclineFriendRequest}
+import models.Formats.{acceptDeclineFriendRequestFormat, createFriendRequestFormat, friendRequestsWithUsersFormat, showUserFormat}
+import models.{AcceptDeclineFriendRequest, CreateFriendRequest, ShowUser}
+import dto.FriendRequestsWithUsersDto
 import play.api.libs.json.Json
 import play.api.Logging
 import play.api.mvc.{AbstractController, ControllerComponents}
@@ -39,11 +40,18 @@ class FriendRequestController @Inject()(cc: ControllerComponents, friendRequestS
       .recover(exception => BadRequest(exception.getMessage))
   }
 
-//  def sumNumberOfFriends(userId: Int) = Action.async {
-//    friendRequestService
-//      .sumNumberOfFriends(userId)
-//      .map(summedFriends => Ok(Json.toJson("User with id: " + userId + " has " + summedFriends.get + " friends")))
-//      .recover(exception => BadRequest(exception.getMessage))
-//  }
+  def getFriendsForUser(userId: Int) = Action.async {
+    friendRequestService
+      .getFriendsForUser(userId)
+      .map((friends: Vector[ShowUser]) => Ok(Json.toJson(friends)))
+      .recover(exception => BadRequest(exception.getMessage))
+  }
+
+  def getFriendRequestsWithUsers(userId: Int) = Action.async {
+    friendRequestService
+      .getFriendRequestsWithUsers(userId)
+      .map((pendingFriends: Vector[FriendRequestsWithUsersDto]) => Ok(Json.toJson(pendingFriends)))
+      .recover(exception => BadRequest(exception.getMessage))
+  }
 
 }

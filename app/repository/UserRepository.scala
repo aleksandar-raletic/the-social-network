@@ -12,7 +12,6 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   import profile.api._
   import slickTables._
-//  val users = TableQuery[UserTable]
 
   def addUser(user: User): Future[User] = {
     db.run((users returning users.map(_.id)) += user)
@@ -39,15 +38,5 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   def listAllUsers: Future[Seq[User]] = {
     db.run(users.result)
   }
-
-//  class UserTable(tag: Tag) extends Table[User](tag, "user") {
-//    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-//    def password = column[String]("password")
-//    def firstName = column[String]("first_name")
-//    def lastName = column[String]("last_name")
-//    def email = column[String]("email")
-//
-//    def * = (id, password, firstName, lastName, email) <> (User.tupled, User.unapply)
-//  }
 
 }

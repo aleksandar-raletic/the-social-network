@@ -1,19 +1,18 @@
 package repository
 
 import com.google.inject.Inject
-import models.Post
-import org.joda.time.DateTime
+import models.{Post, ShowPost}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
+import slick.jdbc.{GetResult, JdbcProfile}
+
 import scala.concurrent.{ExecutionContext, Future}
 
-class PostRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
-    extends HasDatabaseConfigProvider[JdbcProfile] {
+class PostRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, slickTables: SlickTables)(
+    implicit executionContext: ExecutionContext
+) extends HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
-  import com.github.tototoshi.slick.MySQLJodaSupport._
-
-  val posts = TableQuery[PostTable]
+  import slickTables._
 
   def addPost(post: Post) = {
     db.run(posts returning posts.map(_.id) += post)
@@ -41,14 +40,10 @@ class PostRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
       .map(counts => counts.headOption)
   }
 
-  class PostTable(tag: Tag) extends Table[Post](tag, "post") {
-    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-    def userId = column[Int]("user_id")
-    def dateTime = column[DateTime]("date_time")
-    def title = column[String]("title")
-    def text = column[String]("text")
-
-    def * = (id, userId, dateTime, title, text) <> (Post.tupled, Post.unapply)
-
+  import com.github.tototoshi.slick.MySQLJodaSupport._
+  implicit val ListPostsForUserResult = GetResult(r => ShowPost(r.<<, r.<<, r.<<, r.<<))
+  def listPostsForUser(userId: Int) = {
+    db.run(sql"""SELECT id, date_time, title, text FROM post WHERE user_id = $userId ORDER BY date_time""".as[ShowPost])
   }
+
 }

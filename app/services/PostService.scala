@@ -1,7 +1,7 @@
 package services
 
-import dto.PostsAndLikesDto
-import models.{CreatePost, Post, UpdatePost}
+import dto.PostsWithLikesDto
+import models.{CreatePost, Post, UpdatePost, ShowPost}
 import org.joda.time.DateTime
 import repository.PostRepository
 
@@ -45,7 +45,7 @@ class PostService @Inject()(postRepository: PostRepository)(implicit executionCo
           .countLikesForPost(id)
           .map(
             likesCount =>
-              PostsAndLikesDto(
+              PostsWithLikesDto(
                 id = post.id,
                 userId = post.userId,
                 dateTime = post.dateTime,
@@ -56,6 +56,10 @@ class PostService @Inject()(postRepository: PostRepository)(implicit executionCo
           )
       case None => throw new Exception("Error")
     }
+  }
+
+  def listPostsForUser(userId: Int) = {
+    postRepository.listPostsForUser(userId)
   }
 
 }

@@ -1,11 +1,12 @@
 package controllers
 
-import models.Formats.{createPostFormat, postFormat, updatePostFormat, postsAndLikesFormat}
-import models.{CreatePost, Post, UpdatePost}
+import models.Formats.{createPostFormat, showPostFormat, postFormat, postsWithLikesFormat, updatePostFormat}
+import models.{CreatePost, ShowPost, Post, UpdatePost}
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc._
 import services.PostService
+
 import javax.inject._
 import scala.concurrent.ExecutionContext
 
@@ -46,7 +47,7 @@ class PostController @Inject()(cc: ControllerComponents, postService: PostServic
       .recover(exception => BadRequest(exception.getMessage))
   }
 
-  def getPostAndCountLikes(id: Int) = Action.async {
+  def countLikesForPost(id: Int) = Action.async {
     postService.getPost(id).flatMap {
       case Some(post) =>
         postService
@@ -55,6 +56,14 @@ class PostController @Inject()(cc: ControllerComponents, postService: PostServic
             postWithLikes => Ok(Json.toJson(postWithLikes))
           )
     }
+  }
+
+  def listPostsForUser(userId: Int) = Action.async {
+    postService
+      .listPostsForUser(userId)
+      .map((userWithPost: Vector[ShowPost]) => {
+        Ok(Json.toJson(userWithPost))
+      })
   }
 
 }

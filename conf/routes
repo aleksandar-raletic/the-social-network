@@ -1,26 +1,27 @@
-GET     /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
+GET     /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
 
 #UserController
-POST    /users                    controllers.UserController.addUser
-GET     /users                    controllers.UserController.listAllUsers
-GET     /users/:id                controllers.UserController.getUser(id: Int)
-PUT     /users                    controllers.UserController.updateUser
-DELETE  /users/:id                controllers.UserController.deleteUser(id: Int)
+POST    /users                          controllers.UserController.addUser
+GET     /users                          controllers.UserController.listAllUsers
+GET     /users/:id                      controllers.UserController.getUser(id: Int)
+PUT     /users                          controllers.UserController.updateUser
+DELETE  /users/:id                      controllers.UserController.deleteUser(id: Int)
 
 #PostController
-POST    /posts                    controllers.PostController.addPost
-GET     /posts/:id                controllers.PostController.getPost(id: Int)
-PUT     /posts                    controllers.PostController.updatePost
-DELETE  /posts/:id                controllers.PostController.deletePost(id: Int)
-GET     /post-likes/:id          controllers.PostController.getPostAndCountLikes(id: Int)
+POST    /posts                          controllers.PostController.addPost
+GET     /posts/:id                      controllers.PostController.getPost(id: Int)
+PUT     /posts                          controllers.PostController.updatePost
+DELETE  /posts/:id                      controllers.PostController.deletePost(id: Int)
+GET     /post-likes/:id                 controllers.PostController.countLikesForPost(id: Int)
+GET     /posts/user/:userId             controllers.PostController.listPostsForUser(userId: Int)
 
 #LikeController
-POST    /likes                    controllers.LikeController.addLike
-DELETE  /likes                    controllers.LikeController.removeLike
-GET     /likes-count              controllers.LikeController.countLikesForPost
+POST    /likes                          controllers.LikeController.addLike
+DELETE  /likes                          controllers.LikeController.removeLike
 
 #FriendRequestController
-POST    /friend-request           controllers.FriendRequestController.sendFriendRequest
-PUT     /friend-request           controllers.FriendRequestController.acceptFriendRequest
-DELETE  /friend-request           controllers.FriendRequestController.declineFriendRequest
-#GET     /friend-request/:id       controllers.FriendRequestController.sumNumberOfFriends(id: Int)
+POST    /friend-request                 controllers.FriendRequestController.sendFriendRequest
+PUT     /friend-request                 controllers.FriendRequestController.acceptFriendRequest
+DELETE  /friend-request                 controllers.FriendRequestController.declineFriendRequest
+GET     /friend-request/friends/:id     controllers.FriendRequestController.getFriendsForUser(id: Int)
+GET     /friend-request/pending/:id     controllers.FriendRequestController.getFriendRequestsWithUsers(id: Int)

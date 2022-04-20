@@ -1,6 +1,6 @@
 package services
 
-import models.{CreateFriendRequest, AcceptDeclineFriendRequest, FriendRequest}
+import models.{AcceptDeclineFriendRequest, CreateFriendRequest, FriendRequest}
 import repository.FriendRequestRepository
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -65,17 +65,12 @@ class FriendRequestService @Inject()(protected val friendRequestRepository: Frie
     friendRequestRepository.getId(friendRequestId)
   }
 
-//  def sumNumberOfFriends(userId: Int) = {
-//    friendRequestRepository.sumNumberOfFriends(userId)
-//  }
-//
-//  def numberOfFriends(userId: Int) = {
-//    friendRequestRepository.getId(userId).flatMap {
-//      case Some(friendrequest) =>
-//        if (friendrequest.requestFrom == userId) {
-//          //
-//        }
-//    }
-//  }
+  def getFriendsForUser(userId: Int) = {
+    friendRequestRepository.getFriendsForUser(userId)
+  }
+
+  def getFriendRequestsWithUsers(userId: Int) = {
+    friendRequestRepository.getFriendRequestsWithUsers(userId)
+  }
 
 }
